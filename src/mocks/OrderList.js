@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, FlatList, Dimensions, ImageBackground, TouchableOpacity } from 'react-native';
+import { Text, View, ScrollView, FlatList, Dimensions, ImageBackground, TouchableOpacity, Image } from 'react-native';
 import { FontAwesome, SimpleLineIcons, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import userSeeOldRequest from '../Requests/userSeeOldRequests';
 import Modal from 'react-native-modal';
+import { getFixerProfileRequest } from '../Requests/profileRequest';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -12,7 +13,11 @@ class OrderList extends Component {
     requestIndex: '',
     activeModal: null,
     problem: '',
-    serviceType: ''
+    serviceType: '',
+    acceptor: '',
+    fixerFirstName: '',
+    fixerLastName: '',
+    fixerEmail: ''
   }
 
   renderModal() {
@@ -55,6 +60,19 @@ class OrderList extends Component {
                 <Text style={{ fontSize: 16 * 1.15 }}> 20km</Text>
             </View>
             </View>
+
+            <View style={{ alignItems: 'center' }}>
+                <Text style={{ fontSize: 15, color: '#A5A5A5', paddingBottom: 5 }}>Information about Repairer</Text>
+            </View>
+            <View style={styles.profile}>
+							<View style={styles.imgView}>
+								<Image style={styles.img} source={require('../../assets/Icons/photo.png')} />
+							</View>
+							<View style={styles.profileText}>
+								<Text style={styles.name}>{this.state.fixerFirstName} {this.state.fixerLastName}</Text>
+                <Text style={styles.email}>{this.state.fixerEmail}</Text>
+							</View>
+						</View>
         </View>
         </Modal>
     );
@@ -66,7 +84,13 @@ class OrderList extends Component {
       const {requestIndex} = this.state;
 
       userSeeOldRequest(requestIndex).then(res => {
-        this.setState({problem: res.request.problem, serviceType: res.request.serviceType});
+        this.setState({problem: res.request.problem, serviceType: res.request.serviceType, acceptor: res.request.acceptor}, () => {
+          const fixerId = this.state.acceptor;
+
+          getFixerProfileRequest(fixerId).then(res => {
+            this.setState({ fixerFirstName: res.firstName, fixerLastName: res.lastName, fixerEmail: res.email});
+          })
+        });
       });
     });
   }
@@ -270,7 +294,7 @@ const styles = {
   },
   modal: {
     flexDirection: 'column',
-    height: height * 0.75,
+    height: height * 0.40,
     padding: 12 * 2,
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 12,
@@ -284,7 +308,40 @@ const styles = {
     borderBottomWidth: 1,
     borderTopColor: '#C1BEC0',
     borderBottomColor: '#C1BEC0',
-  }
+  },
+  profile: {
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center',
+		borderBottomWidth: 1,
+		borderBottomColor: '#777777',
+  },
+  imgView: {
+		flex: 1,
+		paddingLeft: 20,
+		paddingRight: 20,
+	},
+	img: {
+		height: 70,
+		width: 70,
+		borderRadius: 20,
+  },
+  profileText: {
+		flex: 3,
+		flexDirection: 'column',
+		justifyContent: 'center',
+  },
+  name: {
+		fontSize: 20,
+		paddingBottom: 1,
+		color: 'black',
+		textAlign: 'left',
+  },
+  email: {
+    fontSize: 13,
+		color: 'black',
+		textAlign: 'left',
+  },
 };
 
 

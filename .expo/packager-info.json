@@ -1,8 +1,8 @@
 {
   "expoServerPort": null,
-  "expoServerNgrokUrl": "https://et-rez.fam.fixify-user.exp.direct",
-  "packagerNgrokUrl": "https://packager.et-rez.fam.fixify-user.exp.direct",
-  "ngrokPid": 6841,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "devToolsPort": 19002,
   "packagerPort": null,
   "packagerPid": null,

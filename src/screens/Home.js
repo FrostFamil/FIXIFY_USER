@@ -3,7 +3,7 @@ import {View,Text} from "react-native";
 import {Header, Left, Icon, Body, Title, Right} from 'native-base';
 import ServiceList from '../mocks/ServiceList';
 import {Entypo} from '@expo/vector-icons';
-import profileRequest from '../Requests/profileRequest';
+import {profileRequest} from '../Requests/profileRequest';
 import {StackActions, NavigationActions} from 'react-navigation';
 
 export default class Home extends Component {

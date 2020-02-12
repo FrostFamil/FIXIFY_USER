@@ -1,9 +1,12 @@
 import React, { Component } from "react";
-import {View,Text} from "react-native";
+import {View,Text, AsyncStorage} from "react-native";
 import {Header, Left, Icon, Body, Title, Right} from 'native-base';
 import ServiceList from '../mocks/ServiceList';
+import * as Permissions from 'expo-permissions';
+import {Notifications} from 'expo'
 import {Entypo} from '@expo/vector-icons';
 import {profileRequest} from '../Requests/profileRequest';
+import {pushNotification} from '../Requests/pushNotification';
 import {StackActions, NavigationActions} from 'react-navigation';
 
 export default class Home extends Component {
@@ -21,12 +24,33 @@ export default class Home extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount = async() => {
     profileRequest(global.userId).then(res => {
       global.fName = res.firstName;
       global.email = res.email;
       global.lName = res.lastName;  
     });
+
+    let previousToken = await AsyncStorage.getItem('userPushToken');
+
+    console.log(previousToken);
+
+    if (previousToken){
+      return;
+    }else{
+    let {status} = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+
+    if ( status !== 'granted' ){
+      return;
+    }
+
+    let token = await Notifications.getExpoPushTokenAsync();
+    AsyncStorage.setItem('userPushToken', token);
+    
+    pushNotification(token, global.fName, global.lName, global.userId).then(res => {
+      console.log(res);    
+    })
+  }
   }
 
   techBranchPressed = () => {

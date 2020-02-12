@@ -4,6 +4,8 @@ import {Header, Left, Icon, Body, Title, Right} from 'native-base';
 import {CardSection} from '../components';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import makeRequest from '../Requests/makeRequest';
+import getPushTokens from '../Requests/getPushTokens';
+import sendPushNotification from '../Requests/sendPushNotification';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -28,7 +30,21 @@ export default class Auto extends Component {
     
     makeRequest(latitudeFrom, longitudeFrom, creator, price, problem, serviceType).then(res => {
       if(res){
+        getPushTokens(serviceType).then(res => {
+
+          var i;
+          for (i = 0; i < res.tokens.length; i++) {
+            var to = res.tokens[i].token;
+            const title = "New Request";
+            const body = "New Auto Repairing Request";
+
+            sendPushNotification(to, title, body).then(res => {
+              console.log(res);       
+            })
+          }        
+        })
         this.props.navigation.navigate("successOrder");
+
       } 
     })
   }

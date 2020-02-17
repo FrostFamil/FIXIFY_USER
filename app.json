@@ -28,6 +28,11 @@
       "infoPlist": {
         "NSAppTransportSecurity" : {
           "NSAllowsArbitraryLoads" : true,
+        },
+        "config": {
+          "googleSignIn": {
+            "reservedClientId": "com.googleusercontent.apps.11048211490-qa8aa5jbbfvludlaf6lruarevsplnrbn"
+          }
         }
       }
     },
@@ -36,7 +41,11 @@
      "config": {
       "googleMaps": {
         "apiKey": "AIzaSyAjL_doMA-BBX1S-Lx_BJXrPAjQCFh3UrM"
-       }
+       },
+       "googleSignIn": {
+        "apiKey": "AIzaSyBTRihH093vrMP4WTu8jkvNsTGihXfAn4o",
+        "certificateHash": "FD:33:A6:19:4F:C3:3C:52:E5:75:6E:98:F7:88:6A:9D:EA:01:23:15"
+      }
      }
    }
   }

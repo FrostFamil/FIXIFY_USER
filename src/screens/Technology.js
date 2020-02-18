@@ -1,13 +1,18 @@
 import React, { Component } from "react";
-import {View,Text, StyleSheet, Dimensions, Image, TextInput} from "react-native";
+import {View,Text, StyleSheet, Dimensions, Image, TextInput, TouchableOpacity} from "react-native";
 import {Header, Left, Icon, Body, Title, Right} from 'native-base';
 import {CardSection} from '../components';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import makeRequest from '../Requests/makeRequest';
 import getPushTokens from '../Requests/getPushTokens';
 import sendPushNotification from '../Requests/sendPushNotification';
+import date from 'date-and-time';
+import DateTimePicker from "react-native-modal-datetime-picker";
+import ModalSelector from 'react-native-modal-selector';
 
 const { width, height } = Dimensions.get('screen');
+
+const paymentMethod = [{status: 'Cash'}, {status: 'Card'}];
 
 export default class Technology extends Component {
 
@@ -19,16 +24,19 @@ export default class Technology extends Component {
       problem: '',
       userLocation: "",
       creator: global.userId,
-      price: 10
+      price: 0,
+      scheduled: 'Add Schedule for request',
+      paymentType: 'Chose payment method',
+      isDateTimePickerVisible: false
     }
   }
 
   makeOrder = () => {
-    const { userLocation, creator, price, problem, serviceType } = this.state; 
+    const { userLocation, creator, price, paymentType,  problem, serviceType, scheduled } = this.state; 
     const latitudeFrom = userLocation.latitude;
     const longitudeFrom = userLocation.longitude;
     
-    makeRequest(latitudeFrom, longitudeFrom, creator, price, problem, serviceType).then(res => {
+    makeRequest(latitudeFrom, longitudeFrom, creator, price, paymentType, problem, serviceType, scheduled).then(res => {
       if(res){
         getPushTokens(serviceType).then(res => {
 
@@ -62,6 +70,22 @@ export default class Technology extends Component {
   notifyChange = (data) => {
     this.getCoordsFromName(data);
   }
+
+  showDateTimePicker = () => {
+    this.setState({ isDateTimePickerVisible: true });
+  };
+
+  hideDateTimePicker = () => {
+    this.setState({ isDateTimePickerVisible: false });
+  };
+
+  handleDatePicked = dateTime => {
+    dateTime = date.format(dateTime, "YYYY-MM-DD HH:mm");
+    this.setState({
+      scheduled: dateTime
+     })
+    this.hideDateTimePicker();
+  };
 
   render() {
     return (
@@ -125,6 +149,33 @@ export default class Technology extends Component {
             onChangeText={problem => this.setState({ problem })}
            />
         </CardSection>
+
+        <TouchableOpacity onPress={() => this.showDateTimePicker()}>
+          <CardSection>
+            <DateTimePicker
+              isVisible={this.state.isDateTimePickerVisible}
+              onConfirm={this.handleDatePicked}
+              onCancel={this.hideDateTimePicker}
+              minimumDate={new Date()}
+              mode={'datetime'}
+            />
+            <Text style={{ fontSize: 18 }} >{this.state.scheduled}</Text>
+          </CardSection>
+        </TouchableOpacity>
+
+        <ModalSelector
+            data={paymentMethod}
+            initValue="Choose payment method"
+            keyExtractor={key => key.status}
+            labelExtractor= {item => item.status}
+            accessible={true}
+            scrollViewAccessibilityLabel={'Scrollable options'}
+            cancelButtonAccessibilityLabel={'Cancel Button'}
+            onChange={(option) => this.setState({ paymentType: option.status })}>
+            <CardSection>
+              <Text style={{ fontSize: 18 }} >{this.state.paymentType}</Text>
+            </CardSection>
+        </ModalSelector>
     
       </View>
     );

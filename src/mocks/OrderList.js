@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Text, View, ScrollView, FlatList, Dimensions, ImageBackground, TouchableOpacity, Image } from 'react-native';
-import { FontAwesome, SimpleLineIcons, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome, SimpleLineIcons, Ionicons, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import userSeeOldRequest from '../Requests/userSeeOldRequests';
 import Modal from 'react-native-modal';
 import { getFixerProfileRequest } from '../Requests/profileRequest';
+import userDeleteCurrentRequest from '../Requests/userDeleteCurrentRequest';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -94,6 +95,12 @@ class OrderList extends Component {
       });
     });
   }
+
+  deleteRequest = (requestId) => {
+    userDeleteCurrentRequest(requestId).then(res => {
+      console.log(res);     
+    })
+  }
   
 
     render() {
@@ -129,15 +136,20 @@ class OrderList extends Component {
                     <View style={{ flex: 1, flexDirection: 'row', }}>
                         <View style={styles.serviceInfo}>
                             <MaterialCommunityIcons name="cash" color="black" size={23} />
-                            <Text style={{ marginLeft: 4, color: '#FFBA5A' }}>100</Text>
+                            <Text style={{ marginLeft: 4, color: '#FFBA5A' }}>{item.paymentType}</Text>
                         </View>
                         <View style={styles.serviceInfo}>
                         <FontAwesome name="location-arrow" color="#FF7657" size={12} />
                         <Text style={{ marginLeft: 4, color: '#FF7657' }}>
-                            20 km
+                            NaN km
                         </Text>
                         </View>
                     </View>
+                  </View>
+                  <View style={{ flex: 0.3, justifyContent: 'center' }}>
+                    <TouchableOpacity onPress={() => this.deleteRequest(item._id)}>
+                      <AntDesign name="delete" color="#A5A5A5" size={24} />
+                    </TouchableOpacity>
                   </View>
                 </View>
             </View>)}
@@ -175,7 +187,7 @@ class OrderList extends Component {
                     <View style={{ flex: 1, flexDirection: 'row', }}>
                         <View style={styles.serviceInfo}>
                             <MaterialCommunityIcons name="cash" color="black" size={23} />
-                            <Text style={{ marginLeft: 4, color: '#FFBA5A' }}>100</Text>
+                            <Text style={{ marginLeft: 4, color: '#FFBA5A' }}>{item.paymentType}</Text>
                         </View>
                         <View style={styles.serviceInfo}>
                         <FontAwesome name="location-arrow" color="#FF7657" size={12} />
@@ -188,6 +200,10 @@ class OrderList extends Component {
                   <View style={{ flex: 0.3, justifyContent: 'center' }}>
                     <TouchableOpacity onPress={this.props.details}>
                       <SimpleLineIcons name="info" color="#A5A5A5" size={24} />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => this.deleteRequest(item._id)}>
+                      <AntDesign name="delete" color="#A5A5A5" size={24} />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -226,7 +242,7 @@ class OrderList extends Component {
                     <View style={{ flex: 1, flexDirection: 'row', }}>
                         <View style={styles.serviceInfo}>
                             <MaterialCommunityIcons name="cash" color="black" size={23} />
-                            <Text style={{ marginLeft: 4, color: '#FFBA5A' }}>100</Text>
+                            <Text style={{ marginLeft: 4, color: '#FFBA5A' }}>{item.paymentType}</Text>
                         </View>
                         <View style={styles.serviceInfo}>
                         <FontAwesome name="location-arrow" color="#FF7657" size={12} />
@@ -238,7 +254,7 @@ class OrderList extends Component {
                   </View>
                   <View style={{ flex: 0.3, justifyContent: 'center' }}>
                     <TouchableOpacity onPress={() => this.openDetails(item._id)}>
-                    <SimpleLineIcons name="info" color="#A5A5A5" size={24} />
+                      <SimpleLineIcons name="info" color="#A5A5A5" size={24} />
                     </TouchableOpacity>
                   </View>
                 </View>

@@ -60,7 +60,7 @@ class OrderList extends Component {
             </View>
             <View style={[styles.parkingIcon, {justifyContent: 'flex-start'} ]}>
                 <Ionicons name='ios-pin' size={16 * 1.1} color='#7D818A' />
-                <Text style={{ fontSize: 16 * 1.15 }}> 20km</Text>
+                <Text style={{ fontSize: 16 * 1.15 }}>Live</Text>
             </View>
             </View>
 
@@ -155,7 +155,7 @@ class OrderList extends Component {
                         <View style={styles.serviceInfo}>
                         <FontAwesome name="location-arrow" color="#FF7657" size={12} />
                         <Text style={{ marginLeft: 4, color: '#FF7657' }}>
-                            NaN km
+                            Not Live
                         </Text>
                         </View>
                     </View>
@@ -206,7 +206,7 @@ class OrderList extends Component {
                         <View style={styles.serviceInfo}>
                         <FontAwesome name="location-arrow" color="#FF7657" size={12} />
                         <Text style={{ marginLeft: 4, color: '#FF7657' }}>
-                            20 km
+                            Live
                         </Text>
                         </View>
                     </View>
@@ -261,7 +261,7 @@ class OrderList extends Component {
                         <View style={styles.serviceInfo}>
                         <FontAwesome name="location-arrow" color="#FF7657" size={12} />
                         <Text style={{ marginLeft: 4, color: '#FF7657' }}>
-                            20 km
+                            Not Live
                         </Text>
                         </View>
                     </View>

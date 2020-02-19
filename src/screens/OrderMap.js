@@ -93,7 +93,7 @@ class OrderMap extends Component {
             </View>
             <View style={[styles.parkingIcon, {justifyContent: 'flex-start'} ]}>
               <Ionicons name='ios-pin' size={16 * 1.1} color='#7D818A' />
-              <Text style={{ fontSize: 16 * 1.15 }}> 20km</Text>
+              <Text style={{ fontSize: 16 * 1.15 }}>Live</Text>
             </View>
           </View>
 

@@ -8,6 +8,7 @@ import getAllAcceptedRequests from '../Requests/getAllAcceptedRequests';
 import getAllFinishedRequests from '../Requests/getAllFinishedRequests';
 import userGetsHisCurrentRequest from '../Requests/userGetsHisCurrentRequest';
 import userSeeFixer from "../Requests/userSeeFixer";
+import { getFixerProfileRequest } from '../Requests/profileRequest';
 
 export default class Orders extends Component {
 
@@ -73,12 +74,20 @@ export default class Orders extends Component {
     global.serviceType = res.requests.serviceType;
     global.latitudeFrom = res.requests.latitudeFrom;
     global.longitudeFrom = res.requests.longitudeFrom;
+    global.schedule = res.requests.scheduled;
+    global.payment = res.requests.paymentType;
   }).then(() => {
     userSeeFixer(global.fixerId).then(res => {
       global.latitudeFixer = res.fixer.latitude;
       global.longitudeFixer = res.fixer.longitude;
     }).then(() => {
-      this.props.navigation.navigate("orderMap")
+      getFixerProfileRequest(global.fixerId).then(res => {
+        global.fixerFirstName = res.firstName;
+        global.fixerLastName = res.lastName; 
+        global.fixerEmail = res.email;
+      }).then(() => {
+        this.props.navigation.navigate("orderMap")
+      })
     })
   })
   }

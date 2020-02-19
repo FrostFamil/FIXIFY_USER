@@ -18,7 +18,9 @@ class OrderList extends Component {
     acceptor: '',
     fixerFirstName: '',
     fixerLastName: '',
-    fixerEmail: ''
+    fixerEmail: '',
+    schedule: '',
+    payment: ''
   }
 
   renderModal() {
@@ -74,6 +76,18 @@ class OrderList extends Component {
                 <Text style={styles.email}>{this.state.fixerEmail}</Text>
 							</View>
 						</View>
+
+            <View style={{ alignItems: 'center' }}>
+                <Text style={{ fontSize: 15, color: '#A5A5A5', paddingBottom: 5 }}>Information about Request</Text>
+            </View>
+            <View style={{flexDirection: "row"}}>
+               <Text style={{fontSize: 15, color: 'red'}}>Scheduled for: </Text>
+               <Text>{this.state.schedule}</Text>
+            </View>
+            <View style={{ flexDirection: 'row'}}> 
+               <Text style={{ fontSize: 15, color: 'red'}}>Payment method: </Text>
+               <Text>{this.state.payment}</Text>
+            </View>
         </View>
         </Modal>
     );
@@ -85,7 +99,7 @@ class OrderList extends Component {
       const {requestIndex} = this.state;
 
       userSeeOldRequest(requestIndex).then(res => {
-        this.setState({problem: res.request.problem, serviceType: res.request.serviceType, acceptor: res.request.acceptor}, () => {
+        this.setState({problem: res.request.problem, serviceType: res.request.serviceType, acceptor: res.request.acceptor, schedule: res.request.scheduled, payment: res.request.paymentType}, () => {
           const fixerId = this.state.acceptor;
 
           getFixerProfileRequest(fixerId).then(res => {

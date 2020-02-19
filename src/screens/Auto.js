@@ -25,6 +25,7 @@ export default class Auto extends Component {
       userLocation: "",
       creator: global.userId,
       price: 0,
+      address: '',
       scheduled: 'Add Schedule for request',
       paymentType: 'Chose payment method',
       isDateTimePickerVisible: false
@@ -33,11 +34,11 @@ export default class Auto extends Component {
   }
 
   makeOrder = () => {
-    const { userLocation, creator, price, paymentType, problem, serviceType, scheduled } = this.state; 
+    const { userLocation, creator, price, paymentType, problem, serviceType, scheduled, address } = this.state; 
     const latitudeFrom = userLocation.latitude;
     const longitudeFrom = userLocation.longitude;
     
-    makeRequest(latitudeFrom, longitudeFrom, creator, price, paymentType, problem, serviceType, scheduled).then(res => {
+    makeRequest(latitudeFrom, longitudeFrom, creator, price, paymentType, problem, serviceType, scheduled, address).then(res => {
       if(res){
         getPushTokens(serviceType).then(res => {
 
@@ -69,8 +70,10 @@ export default class Auto extends Component {
     });
   }
 
-  notifyChange = (data) => {
+  notifyChange = (data, details) => {
     this.getCoordsFromName(data);
+    
+    this.setState({ address: details.formatted_address});
   }
 
   showDateTimePicker = () => {
@@ -127,7 +130,7 @@ export default class Auto extends Component {
                 }}
                 renderDescription={row => row.description}
                 onPress={(data, details = null) => {
-                    this.notifyChange(details.geometry.location);
+                    this.notifyChange(details.geometry.location, details);
                 }
               }
               query={{

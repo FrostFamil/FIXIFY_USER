@@ -2,7 +2,7 @@ import React from 'react';
 import {AsycnStorage } from 'react-native';
 import axios from 'axios';
 
-const makeRequest = (latitudeFrom, longitudeFrom, creator, price, paymentType, problem, serviceType, scheduled) => {
+const makeRequest = (latitudeFrom, longitudeFrom, creator, price, paymentType, problem, serviceType, scheduled, address) => {
     return axios({
     method: 'post',
     url: 'http://192.168.0.87:8080/requests/makeRequest',
@@ -15,7 +15,8 @@ const makeRequest = (latitudeFrom, longitudeFrom, creator, price, paymentType, p
         paymentType: paymentType,
         problem: problem,
         serviceType: serviceType,
-        scheduled: scheduled
+        scheduled: scheduled,
+        address: address
     }
     })
     .then(response => {

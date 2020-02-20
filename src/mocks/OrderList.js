@@ -20,7 +20,8 @@ class OrderList extends Component {
     fixerLastName: '',
     fixerEmail: '',
     schedule: '',
-    payment: ''
+    payment: '',
+    address: ''
   }
 
   renderModal() {
@@ -88,6 +89,10 @@ class OrderList extends Component {
                <Text style={{ fontSize: 15, color: 'red'}}>Payment method: </Text>
                <Text>{this.state.payment}</Text>
             </View>
+            <View style={{ flexDirection: 'row'}}> 
+               <Text style={{ fontSize: 15, color: 'red'}}>Address: </Text>
+               <Text>{this.state.address}</Text>
+            </View>
         </View>
         </Modal>
     );
@@ -99,7 +104,7 @@ class OrderList extends Component {
       const {requestIndex} = this.state;
 
       userSeeOldRequest(requestIndex).then(res => {
-        this.setState({problem: res.request.problem, serviceType: res.request.serviceType, acceptor: res.request.acceptor, schedule: res.request.scheduled, payment: res.request.paymentType}, () => {
+        this.setState({problem: res.request.problem, serviceType: res.request.serviceType, acceptor: res.request.acceptor, schedule: res.request.scheduled, payment: res.request.paymentType, address: res.request.address}, () => {
           const fixerId = this.state.acceptor;
 
           getFixerProfileRequest(fixerId).then(res => {

@@ -76,6 +76,7 @@ export default class Orders extends Component {
     global.longitudeFrom = res.requests.longitudeFrom;
     global.schedule = res.requests.scheduled;
     global.payment = res.requests.paymentType;
+    global.address = res.requests.address;
   }).then(() => {
     userSeeFixer(global.fixerId).then(res => {
       global.latitudeFixer = res.fixer.latitude;

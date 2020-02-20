@@ -120,7 +120,12 @@ class OrderMap extends Component {
             <View style={{ flexDirection: 'row', bottom: 5}}> 
                <Text style={{ fontSize: 15, color: 'red'}}>Payment method: </Text>
                <Text>{global.payment}</Text>
-          </View>
+            </View>
+
+            <View style={{ flexDirection: 'row', bottom: 5}}> 
+               <Text style={{ fontSize: 15, color: 'red'}}>Address: </Text>
+               <Text>{global.address}</Text>
+            </View>
 
           <View>
             <TouchableOpacity style={styles.payBtn} onPress={() => this.goBack()}>

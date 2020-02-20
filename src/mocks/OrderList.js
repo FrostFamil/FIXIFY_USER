@@ -5,6 +5,9 @@ import userSeeOldRequest from '../Requests/userSeeOldRequests';
 import Modal from 'react-native-modal';
 import { getFixerProfileRequest } from '../Requests/profileRequest';
 import userDeleteCurrentRequest from '../Requests/userDeleteCurrentRequest';
+import { userAcceptPrice, userDeclinePrice } from '../Requests/priceNegotiations';
+import getPushTokens from '../Requests/getPushTokens';
+import sendPushNotification from '../Requests/sendPushNotification';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -21,7 +24,8 @@ class OrderList extends Component {
     fixerEmail: '',
     schedule: '',
     payment: '',
-    address: ''
+    address: '',
+    price: ''
   }
 
   renderModal() {
@@ -53,7 +57,7 @@ class OrderList extends Component {
             <View style={styles.modalInfo}>
             <View style={[styles.parkingIcon, {justifyContent: 'flex-start'} ]}>
                 <Ionicons name='ios-pricetag' size={16 * 1.1} color='#7D818A' />
-                <Text style={{ fontSize: 16 * 1.15 }}> $15</Text>
+                <Text style={{ fontSize: 16 * 1.15 }}> ${this.state.price}</Text>
             </View>
             <View style={[styles.parkingIcon, {justifyContent: 'flex-start'} ]}>
                 <Ionicons name='ios-star' size={16 * 1.1} color='#7D818A' />
@@ -61,7 +65,7 @@ class OrderList extends Component {
             </View>
             <View style={[styles.parkingIcon, {justifyContent: 'flex-start'} ]}>
                 <Ionicons name='ios-pin' size={16 * 1.1} color='#7D818A' />
-                <Text style={{ fontSize: 16 * 1.15 }}>Live</Text>
+                <Text style={{ fontSize: 16 * 1.15 }}>Not Live</Text>
             </View>
             </View>
 
@@ -104,7 +108,7 @@ class OrderList extends Component {
       const {requestIndex} = this.state;
 
       userSeeOldRequest(requestIndex).then(res => {
-        this.setState({problem: res.request.problem, serviceType: res.request.serviceType, acceptor: res.request.acceptor, schedule: res.request.scheduled, payment: res.request.paymentType, address: res.request.address}, () => {
+        this.setState({problem: res.request.problem, serviceType: res.request.serviceType, acceptor: res.request.acceptor, schedule: res.request.scheduled, payment: res.request.paymentType, address: res.request.address, price: res.request.price}, () => {
           const fixerId = this.state.acceptor;
 
           getFixerProfileRequest(fixerId).then(res => {
@@ -119,6 +123,58 @@ class OrderList extends Component {
     userDeleteCurrentRequest(requestId).then(res => {
       console.log(res);     
     })
+  }
+
+  acceptPrice = (requestId) => {
+
+    userAcceptPrice(requestId).then(res => {
+      console.log(res); 
+      const serviceType = res.requests.serviceType;
+      let acceptor = res.requests.acceptor;
+
+      getPushTokens(serviceType).then(res => {
+
+        var i;
+        for (i = 0; i < res.tokens.length; i++) {
+          if(res.tokens[i].fixerId === acceptor){
+            var to = res.tokens[i].token;
+            const title = "Price Accepted";
+            const body = "Your Price for Repairing Request accepted";
+
+            sendPushNotification(to, title, body).then(res => {
+              console.log(res);       
+            })
+          }
+        }        
+      })
+    })
+  }
+
+  deletePrice = (requestId) => {
+
+    userDeclinePrice(requestId).then(res => {
+      console.log(res);
+      const serviceType = res.requests.serviceType;
+      let acceptor = res.requests.acceptor;
+
+      getPushTokens(serviceType).then(res => {
+
+        var i;
+        for (i = 0; i < res.tokens.length; i++) {
+          if(res.tokens[i].fixerId === acceptor){
+            var to = res.tokens[i].token;
+            const title = "Price Declined";
+            const body = "Your Price for Repairing Request declined";
+
+            sendPushNotification(to, title, body).then(res => {
+              console.log(res);       
+            })
+          }
+        }        
+      })
+      
+    })
+
   }
   
 
@@ -158,6 +214,10 @@ class OrderList extends Component {
                             <Text style={{ marginLeft: 4, color: '#FFBA5A' }}>{item.paymentType}</Text>
                         </View>
                         <View style={styles.serviceInfo}>
+                            <MaterialCommunityIcons name="square-inc-cash" color="black" size={23} />
+                            <Text style={{ marginLeft: 4, color: '#FFBA5A' }}>{item.price}</Text>
+                        </View>
+                        <View style={styles.serviceInfo}>
                         <FontAwesome name="location-arrow" color="#FF7657" size={12} />
                         <Text style={{ marginLeft: 4, color: '#FF7657' }}>
                             Not Live
@@ -169,6 +229,73 @@ class OrderList extends Component {
                     <TouchableOpacity onPress={() => this.deleteRequest(item._id)}>
                       <AntDesign name="delete" color="#A5A5A5" size={24} />
                     </TouchableOpacity>
+                    
+                    <TouchableOpacity onPress={() => this.acceptPrice(item._id)}>
+                      <AntDesign name="checkcircle" color="#A5A5A5" size={24} />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => this.deletePrice(item._id)}>
+                      <AntDesign name="closecircle" color="#A5A5A5" size={24} />
+                    </TouchableOpacity>
+                    
+                  </View>
+                </View>
+            </View>)}
+            />:null
+          }
+          {
+            this.props.notAcceptedOrders ?
+            <FlatList
+              id={this.props.orderIndex}
+              data={this.props.notAcceptedOrders}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({item} ) => (
+                <View>
+                <View style={styles.services}>
+                  <ImageBackground
+                      style={styles.serviceImage}
+                      imageStyle={styles.serviceImage}
+                      source={require('../../assets/Icons/history.png')}
+                  />
+                  <View style={styles.serviceDetails}>
+                    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }}>
+                        <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
+                        {item.serviceType}
+                        </Text>
+                        <Text style={{ fontSize: 12, color: '#A5A5A5', paddingTop: 5 }}>
+                        {item.status}
+                        </Text>
+                    </View>
+                    <View style={{ flex: 1, flexDirection: 'row', }}>
+                        <View style={styles.serviceInfo}>
+                            <MaterialCommunityIcons name="cash" color="black" size={23} />
+                            <Text style={{ marginLeft: 4, color: '#FFBA5A' }}>{item.paymentType}</Text>
+                        </View>
+                        <View style={styles.serviceInfo}>
+                            <MaterialCommunityIcons name="square-inc-cash" color="black" size={23} />
+                            <Text style={{ marginLeft: 4, color: '#FFBA5A' }}>{item.price}</Text>
+                        </View>
+                        <View style={styles.serviceInfo}>
+                        <FontAwesome name="location-arrow" color="#FF7657" size={12} />
+                        <Text style={{ marginLeft: 4, color: '#FF7657' }}>
+                            Not Live
+                        </Text>
+                        </View>
+                    </View>
+                  </View>
+                  <View style={{ flex: 0.3, justifyContent: 'center' }}>
+                    <TouchableOpacity onPress={() => this.deleteRequest(item._id)}>
+                      <AntDesign name="delete" color="#A5A5A5" size={24} />
+                    </TouchableOpacity>
+                    
+                    <TouchableOpacity onPress={() => this.acceptPrice(item._id)}>
+                      <AntDesign name="checkcircle" color="#A5A5A5" size={24} />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => this.deletePrice(item._id)}>
+                      <AntDesign name="closecircle" color="#A5A5A5" size={24} />
+                    </TouchableOpacity>
+                    
                   </View>
                 </View>
             </View>)}

@@ -32,7 +32,7 @@ class OrderMap extends Component {
             <View style={styles.parkingInfo}>
               <View style={styles.parkingIcon}>
                 <Ionicons name='ios-pricetag' size={16} color='#7D818A' />
-                <Text style={{ marginLeft: 12 }}> $15</Text>
+                <Text style={{ marginLeft: 12 }}> ${global.price}</Text>
               </View>
               <View style={styles.parkingIcon}>
                 <Ionicons name='ios-star' size={16} color='#7D818A' />
@@ -85,7 +85,7 @@ class OrderMap extends Component {
           <View style={styles.modalInfo}>
             <View style={[styles.parkingIcon, {justifyContent: 'flex-start'} ]}>
               <Ionicons name='ios-pricetag' size={16 * 1.1} color='#7D818A' />
-              <Text style={{ fontSize: 16 * 1.15 }}> $15</Text>
+              <Text style={{ fontSize: 16 * 1.15 }}> ${global.price}</Text>
             </View>
             <View style={[styles.parkingIcon, {justifyContent: 'flex-start'} ]}>
               <Ionicons name='ios-star' size={16 * 1.1} color='#7D818A' />
@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
   },
   modal: {
     flexDirection: 'column',
-    height: height * 0.45,
+    height: height * 0.48,
     padding: 12 * 2,
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 12,

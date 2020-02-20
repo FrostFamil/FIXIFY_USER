@@ -4,6 +4,7 @@ import {Header, Left, Icon, Body, Title, Right} from 'native-base';
 import {Ionicons, FontAwesome} from '@expo/vector-icons';
 import OrderList from '../mocks/OrderList';
 import getAllPendingRequests from "../Requests/getAllPendingRequests";
+import getAllNotAcceptedRequest from '../Requests/getAllNotAcceptedRequest';
 import getAllAcceptedRequests from '../Requests/getAllAcceptedRequests';
 import getAllFinishedRequests from '../Requests/getAllFinishedRequests';
 import userGetsHisCurrentRequest from '../Requests/userGetsHisCurrentRequest';
@@ -29,12 +30,17 @@ export default class Orders extends Component {
     pendingOrders: [],
     acceptedOrders: [],
     finishedOrders: [],
+    notAcceptedOrders: [],
     orderIndex: '',
     creator: global.userId
   }
 
   componentDidMount() {
     const {creator} = this.state;
+
+    getAllNotAcceptedRequest(creator).then(res => {
+      this.setState({ notAcceptedOrders: res.requests}); 
+    })
 
     getAllPendingRequests(creator).then(res => {
       this.setState({ pendingOrders: res.requests});     
@@ -51,6 +57,10 @@ export default class Orders extends Component {
 
   refreshPressed = () => {
     const {creator} = this.state;
+
+    getAllNotAcceptedRequest(creator).then(res => {
+      this.setState({ notAcceptedOrders: res.requests}); 
+    });
 
     getAllPendingRequests(creator).then(res => {
       this.setState({ pendingOrders: res.requests});     
@@ -77,6 +87,7 @@ export default class Orders extends Component {
     global.schedule = res.requests.scheduled;
     global.payment = res.requests.paymentType;
     global.address = res.requests.address;
+    global.price = res.requests.price;
   }).then(() => {
     userSeeFixer(global.fixerId).then(res => {
       global.latitudeFixer = res.fixer.latitude;
@@ -108,7 +119,7 @@ export default class Orders extends Component {
           </Right>
         </Header>
         
-        <OrderList pendingOrders={this.state.pendingOrders} acceptedOrders={this.state.acceptedOrders} finishedOrders={this.state.finishedOrders} details={() => this.openMapDetails()} />
+        <OrderList pendingOrders={this.state.pendingOrders} notAcceptedOrders={this.state.notAcceptedOrders} acceptedOrders={this.state.acceptedOrders} finishedOrders={this.state.finishedOrders} details={() => this.openMapDetails()} />
       </View>
     );
   }

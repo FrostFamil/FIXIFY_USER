@@ -21,6 +21,7 @@ import About from './About';
 import Support from './Support';
 import SuccessfullOrderScreen from "./SuccesfullOrderScreen";
 import OrderMap from "./OrderMap";
+import CreditCardCharge from './CreditCardCharge';
 
 
 const drawerScreen = createDrawerNavigator({
@@ -76,7 +77,8 @@ const AppNavigator = createStackNavigator({
 				auto: { screen: Auto, navigationOptions: { tabBarVisible: false } },
 				household: { screen: Household, navigationOptions: { tabBarVisible: false } },
 				successOrder: { screen: SuccessfullOrderScreen, navigationOptions: { tabBarVisible: false }},
-				orderMap: { screen: OrderMap, navigationOptions: { tabBarVisible: false }}
+				orderMap: { screen: OrderMap, navigationOptions: { tabBarVisible: false }},
+				creditCardCharge: { screen: CreditCardCharge, navigationOptions: { tabBarVisible: false }}
 			  }, {
 				swipeEnabled: false
 			  })

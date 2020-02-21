@@ -3,6 +3,7 @@ import { Text, StyleSheet, View, Dimensions, TouchableOpacity, TouchableWithoutF
 import MapView, {Marker} from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import userFinishRequest from '../Requests/userFinishRequest';
 
 const { height, width } = Dimensions.get('screen');
 
@@ -13,8 +14,10 @@ class OrderMap extends Component {
   }
 
   goBack = () => {
-    this.props.navigation.navigate("home");
-    this.setState({ activeModal: null });
+    userFinishRequest(global.requestIndex).then(res => {
+      this.props.navigation.navigate("creditCardCharge");
+      this.setState({ activeModal: null });
+    })
   }
 
   renderParking = () => {

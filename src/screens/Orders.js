@@ -79,6 +79,7 @@ export default class Orders extends Component {
   const creator = global.userId;
 
   userGetsHisCurrentRequest(creator).then(res => {
+    global.requestIndex = res.requests._id;
     global.fixerId = res.requests.acceptor;
     global.problem = res.requests.problem;
     global.serviceType = res.requests.serviceType;

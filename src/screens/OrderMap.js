@@ -14,10 +14,17 @@ class OrderMap extends Component {
   }
 
   goBack = () => {
-    userFinishRequest(global.requestIndex).then(res => {
-      this.props.navigation.navigate("creditCardCharge");
-      this.setState({ activeModal: null });
-    })
+    if(global.payment === 'Card'){
+      userFinishRequest(global.requestIndex).then(res => {
+        this.props.navigation.navigate("creditCardCharge");
+        this.setState({ activeModal: null });
+      })
+    }else {
+      userFinishRequest(global.requestIndex).then(res => {
+        this.props.navigation.navigate("home");
+        this.setState({ activeModal: null });
+      })
+    }
   }
 
   renderParking = () => {

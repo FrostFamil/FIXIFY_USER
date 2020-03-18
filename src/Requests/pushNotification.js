@@ -5,7 +5,7 @@ import axios from 'axios';
 const pushNotification = (token, fName, lName, userId) => {
     return axios({
     method: 'post',
-    url: 'http://192.168.0.87:8080/notification/saveUsersToken',
+    url: 'http://192.168.0.88:8080/notification/saveUsersToken',
     data: {
         token: token,
         fName: fName,

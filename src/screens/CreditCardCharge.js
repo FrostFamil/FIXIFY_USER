@@ -1,8 +1,12 @@
 import React, { Component } from "react";
-import {View, Alert} from "react-native";
+import {View, Alert, FlatList, TouchableOpacity, Modal} from "react-native";
 import { Button, Text } from '../registerComponents';
 import { CreditCardInput } from "react-native-credit-card-input";
+import { saveUserCard, getCards } from "../Requests/profileRequest";
 import makePayment from "../Requests/makePayment";
+import { Card } from 'react-native-elements';
+import { Input } from '../registerComponents';
+import { FontAwesome } from '@expo/vector-icons';
 var stripe = require('stripe-client')('pk_test_Umwwh7JNL9kbihbfvhK0lykW00XnLlHQDX');
 
 export default class CreditCardCharge extends Component {
@@ -11,7 +15,17 @@ export default class CreditCardCharge extends Component {
     number: '',
     exp_month: '',
     exp_year: '',
-    cvc: ''
+    cvc: '',
+    cards: [],
+    openCVCModal: false,
+  }
+
+  componentDidMount() {
+    const creatorOfCard = global.userId;
+
+    getCards(creatorOfCard).then(res => {
+      this.setState({ cards: res.cards });
+    })
   }
 
   onChange = (form) => { 
@@ -23,7 +37,18 @@ export default class CreditCardCharge extends Component {
     });
   }
 
+  cardSelected = (cardNumber, expMonth, expYear) => {
+    this.setState({
+      number: cardNumber,
+      exp_month: expMonth,
+      exp_year: expYear,
+      openCVCModal: true
+    });
+  }
+
   onSubmit = async() => {
+
+    this.setState({ openCVCModal: false })
 
     var card = await stripe.createToken({
       card: {
@@ -41,14 +66,14 @@ export default class CreditCardCharge extends Component {
       if(res){
         Alert.alert(
           'Payment was successfull',
-          'Do you want to return Home menu ?',
+          'Do you want to save this card for future use ?',
           [
             {
-              text: 'Cancel',
-              onPress: () => console.log('Cancel Pressed'),
+              text: 'NO',
+              onPress: () => this.props.navigation.navigate('home'),
               style: 'cancel',
             },
-            {text: 'OK', onPress: () => this.acceptPressed()},
+            {text: 'YES', onPress: () => this.acceptPressed()},
           ],
           {cancelable: false},
         );
@@ -57,7 +82,24 @@ export default class CreditCardCharge extends Component {
   }
 
   acceptPressed = () => {
-    this.props.navigation.navigate('home');
+    const {number, exp_month, exp_year} = this.state;
+    const creatorOfCard = global.userId;
+
+    saveUserCard(number, exp_month, exp_year, creatorOfCard).then(res => {
+      Alert.alert(
+        'Card Saved Succesfully',
+        'Do you want to return Home screen ?',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => this.props.navigation.navigate('home')},
+        ],
+        {cancelable: false},
+      );
+    })
   }
 
   render() {
@@ -74,7 +116,61 @@ export default class CreditCardCharge extends Component {
             <Text button>Submit</Text>
         </Button>
         </View>
+
+        <FlatList 
+          data={this.state.cards}
+          keyExtractor={item => item.expMonth.toString()}
+          renderItem={({ item }) =>
+          <TouchableOpacity onPress={() => this.cardSelected(item.cardNumber, item.expMonth, item.expYear)}>
+            <Card
+              title={item.cardNumber.replace(/(\d{4}(?!\s))/g, "$1 ") + "\n" + "\n" + item.expMonth + "/" + item.expYear}>
+            </Card>
+          </TouchableOpacity>
+        }
+        />
+
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={this.state.openCVCModal}
+        onRequestClose={() => this.setState({ openCVCModal: false})}
+      >
+        <View style={{ top: 400, alignItems: 'center' }}>
+          <Input
+            full
+            secureTextEntry
+            keyboardType='phone-pad'
+            label="CVC"
+            style={{color: 'black' }}
+            value={this.state.cvc}
+            onChangeText={(text) => this.setState({ cvc: text })}
+          />
+          <View style={{ flexDirection: 'row'}}>
+            <TouchableOpacity style={[styles.payBtn, {backgroundColor: 'green'}]} onPress={() => this.onSubmit()}>
+              <Text>
+                Submit
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.payBtn} onPress={() => this.setState({ openCVCModal: false })}>
+              <Text>
+                Cancel
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       </View>
     );
   }
 }
+
+const styles = {
+  payBtn: {
+    borderRadius: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 12 * 1.2,
+    backgroundColor: '#D83C54',
+  },
+};

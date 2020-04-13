@@ -5,7 +5,7 @@ import axios from 'axios';
 const makeRequest = (latitudeFrom, longitudeFrom, creator, price, paymentType, problem, serviceType, scheduled, address) => {
     return axios({
     method: 'post',
-    url: 'http://192.168.0.88:8080/requests/makeRequest',
+    url: 'http://192.168.0.87:8080/requests/makeRequest',
     data: {
         latitudeFrom: latitudeFrom,
         longitudeFrom: longitudeFrom,

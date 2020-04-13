@@ -4,13 +4,16 @@ import MapView, {Marker} from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import userFinishRequest from '../Requests/userFinishRequest';
+import userSeeFixer from "../Requests/userSeeFixer";
 
 const { height, width } = Dimensions.get('screen');
 
 class OrderMap extends Component {
   state = {
     activeModal: null,
-    date: new Date()
+    date: new Date(),
+    fixerLat: global.latitudeFixer,
+    fixerLng: global.longitudeFixer
   }
 
   goBack = () => {
@@ -25,6 +28,12 @@ class OrderMap extends Component {
         this.setState({ activeModal: null });
       })
     }
+  }
+
+  refreshMap = () => {
+    userSeeFixer(global.fixerId).then(res => {
+      this.setState({ fixerLat: res.fixer.latitude, fixerLng: res.fixer.longitude})
+    })
   }
 
   renderParking = () => {
@@ -162,8 +171,9 @@ class OrderMap extends Component {
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
+          onRegionChange={() => this.refreshMap()}
         >
-          <Marker coordinate={{latitude: parseFloat(global.latitudeFixer), longitude: parseFloat(global.longitudeFixer)}}>
+          <Marker coordinate={{latitude: parseFloat(this.state.fixerLat), longitude: parseFloat(this.state.fixerLng)}}>
             <View style={styles.myMarker}>
               <View style={styles.myMarkerDot} />
             </View>

@@ -5,7 +5,7 @@ import axios from 'axios';
 const profileRequest = (userId) => {
     return axios({
     method: 'post',
-    url: 'http://192.168.0.88:8080/auth/profile',
+    url: 'http://192.168.0.87:8080/auth/profile',
     data: {
         userId: userId
     }
@@ -21,7 +21,7 @@ const profileRequest = (userId) => {
 const getFixerProfileRequest = (fixerId) => {
     return axios({
     method: 'post',
-    url: 'http://192.168.0.88:8080/auth/fixerProfile',
+    url: 'http://192.168.0.87:8080/auth/fixerProfile',
     data: {
         fixerId: fixerId
     }

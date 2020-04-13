@@ -120,7 +120,14 @@ export default class Orders extends Component {
           </Right>
         </Header>
         
-        <OrderList pendingOrders={this.state.pendingOrders} notAcceptedOrders={this.state.notAcceptedOrders} acceptedOrders={this.state.acceptedOrders} finishedOrders={this.state.finishedOrders} details={() => this.openMapDetails()} />
+        <OrderList 
+        pendingOrders={this.state.pendingOrders} 
+        notAcceptedOrders={this.state.notAcceptedOrders} 
+        acceptedOrders={this.state.acceptedOrders} 
+        finishedOrders={this.state.finishedOrders} 
+        details={() => this.openMapDetails()}  
+        updateMap={() => this.refreshMap()}
+        />
       </View>
     );
   }

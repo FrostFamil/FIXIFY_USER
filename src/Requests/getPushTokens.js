@@ -5,7 +5,7 @@ import axios from 'axios';
 const getPushTokens = (serviceType) => {
     return axios({
     method: 'post',
-    url: 'http://192.168.0.88:8080/notification/getFixersToken',
+    url: 'http://192.168.0.87:8080/notification/getFixersToken',
     data: {
         serviceType: serviceType
     }

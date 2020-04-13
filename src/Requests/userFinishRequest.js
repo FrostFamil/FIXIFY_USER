@@ -6,7 +6,7 @@ import axios from 'axios';
 const userFinishRequest = (requestIndex) => {
     return axios({
     method: 'post',
-    url: 'http://192.168.0.88:8080/requests/userFinishRequest',
+    url: 'http://192.168.0.87:8080/requests/userFinishRequest',
     data: {
         requestIndex: requestIndex
     }

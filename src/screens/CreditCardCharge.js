@@ -135,11 +135,11 @@ export default class CreditCardCharge extends Component {
         visible={this.state.openCVCModal}
         onRequestClose={() => this.setState({ openCVCModal: false})}
       >
-        <View style={{ top: 300, alignItems: 'center' }}>
+        <View style={{ top: 120, alignItems: 'center' }}>
           <Card
             title={this.state.number.replace(/(\d{4}(?!\s))/g, "$1 ") + "\n" + "\n" + this.state.exp_month + "/" + this.state.exp_year}>
           </Card>
-          <Text style={{ fontSize: 20, color: 'black', top: 5 }}>Please enter CVC code of Card showed above</Text>
+          <Text style={{ fontSize: 17, color: 'black', top: 5 }}>Please enter CVC code of Card showed above</Text>
           <Input
             full
             secureTextEntry

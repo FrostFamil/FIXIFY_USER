@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
   },
   modal: {
     flexDirection: 'column',
-    height: height * 0.48,
+    height: height * 0.63,
     padding: 12 * 2,
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 12,

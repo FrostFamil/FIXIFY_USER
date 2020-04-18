@@ -205,7 +205,7 @@ class OrderList extends Component {
                         {item.serviceType}
                         </Text>
                         <Text style={{ fontSize: 12, color: '#A5A5A5', paddingTop: 5 }}>
-                        {item.status}
+                        {item.problem}
                         </Text>
                     </View>
                     <View style={{ flex: 1, flexDirection: 'row', }}>
@@ -214,7 +214,7 @@ class OrderList extends Component {
                             <Text style={{ marginLeft: 4, color: '#FFBA5A' }}>{item.paymentType}</Text>
                         </View>
                         <View style={styles.serviceInfo}>
-                            <MaterialCommunityIcons name="square-inc-cash" color="black" size={23} />
+                            <MaterialCommunityIcons name="square-inc-cash" color="black" size={16} />
                             <Text style={{ marginLeft: 4, color: '#FFBA5A' }}>{item.price}</Text>
                         </View>
                         <View style={styles.serviceInfo}>
@@ -263,7 +263,7 @@ class OrderList extends Component {
                         {item.serviceType}
                         </Text>
                         <Text style={{ fontSize: 12, color: '#A5A5A5', paddingTop: 5 }}>
-                        {item.status}
+                        {item.problem}
                         </Text>
                     </View>
                     <View style={{ flex: 1, flexDirection: 'row', }}>
@@ -272,7 +272,7 @@ class OrderList extends Component {
                             <Text style={{ marginLeft: 4, color: '#FFBA5A' }}>{item.paymentType}</Text>
                         </View>
                         <View style={styles.serviceInfo}>
-                            <MaterialCommunityIcons name="square-inc-cash" color="black" size={23} />
+                            <MaterialCommunityIcons name="square-inc-cash" color="black" size={16} />
                             <Text style={{ marginLeft: 4, color: '#FFBA5A' }}>{item.price}</Text>
                         </View>
                         <View style={styles.serviceInfo}>
@@ -327,7 +327,7 @@ class OrderList extends Component {
                         {item.serviceType}
                         </Text>
                         <Text style={{ fontSize: 12, color: '#A5A5A5', paddingTop: 5 }}>
-                        {item.status}
+                        {item.problem}
                         </Text>
                     </View>
                     <View style={{ flex: 1, flexDirection: 'row', }}>
@@ -382,7 +382,7 @@ class OrderList extends Component {
                         {item.serviceType}
                         </Text>
                         <Text style={{ fontSize: 12, color: '#A5A5A5', paddingTop: 5 }}>
-                        {item.status}
+                        {item.problem}
                         </Text>
                     </View>
                     <View style={{ flex: 1, flexDirection: 'row', }}>
@@ -456,7 +456,7 @@ const styles = {
   },
   modal: {
     flexDirection: 'column',
-    height: height * 0.40,
+    height: height * 0.63,
     padding: 12 * 2,
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 12,

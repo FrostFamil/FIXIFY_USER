@@ -55,6 +55,7 @@ export default class Support extends Component {
 
         <CardSection>
           <SettingInput
+          testID="fullName"
           placeholder="Famil Samadli"
           label="Full Name"
           style={{ height: 40, width: 100 }}
@@ -65,6 +66,7 @@ export default class Support extends Component {
 
        <CardSection>
         <SettingInput
+          testID="email"
           placeholder="user@gmail.com"
           label="Email"
           style={{ height: 40, width: 100 }}
@@ -76,6 +78,7 @@ export default class Support extends Component {
        <CardSection>
         <TextInput
           {...this.props} // Inherit any props passed to it; e.g., multiline, numberOfLines below
+          testID="problem"
           editable = {true}
           maxLength = {1000}
           style={{ fontSize: 18 }}

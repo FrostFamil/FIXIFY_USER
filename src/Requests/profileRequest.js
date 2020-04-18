@@ -66,4 +66,23 @@ const getCards = (creatorOfCard) => {
     });
 }
 
-export {profileRequest, getFixerProfileRequest, saveUserCard, getCards};
+const updateUserProfileRequest = (userId, fName, lName, email, phone) => {
+    return axios({
+    method: 'post',
+    url: 'http://192.168.0.87:8080/auth/updateUserProfile',
+    data: {
+        userId: userId,
+        fName: fName,
+        lName: lName,
+        email: email,
+        phone: phone
+    }
+    })
+    .then(response => {
+        return response;
+    }, error => {
+        console.log(error);
+    });
+}
+
+export {profileRequest, getFixerProfileRequest, saveUserCard, getCards, updateUserProfileRequest};

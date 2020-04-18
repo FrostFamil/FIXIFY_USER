@@ -117,6 +117,7 @@ class Register extends Component {
             <Input
               full
               label="First name"
+              testID="fname"
               style={{ marginBottom: 25 }}
               value={this.state.firstName}
               onChangeText={(text) => this.setState({ firstName:text })}
@@ -124,6 +125,7 @@ class Register extends Component {
             <Input
               full
               label="Last name"
+              testID="lname"
               style={{ marginBottom: 25 }}
               value={this.state.lastName}
               onChangeText={(text) => this.setState({ lastName:text })}
@@ -131,6 +133,7 @@ class Register extends Component {
             <Input
               full
               email
+              testID="email"
               label="Email address"
               style={{ marginBottom: 25 }}
               value={this.state.email}
@@ -138,6 +141,7 @@ class Register extends Component {
             />
             <Input
               full
+              testID="phone"
               keyboardType='phone-pad'
               label="Mobile number"
               style={{ marginBottom: 25 }}
@@ -147,6 +151,7 @@ class Register extends Component {
             <Input
               full
               password
+              testID="password"
               label="Password"
               style={{ marginBottom: 25 }}
               value={this.state.password}

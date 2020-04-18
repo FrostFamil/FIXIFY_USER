@@ -143,6 +143,7 @@ export default class CreditCardCharge extends Component {
           <Input
             full
             secureTextEntry
+            testID="cvc"
             keyboardType='phone-pad'
             label="CVC"
             style={{color: 'black' }}

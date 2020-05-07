@@ -5,7 +5,7 @@ import axios from 'axios';
 const makePayment = (fName, email, amount, token) => {
     return axios({
     method: 'post',
-    url: 'http://localhost:8080/payment/chargeCreditCard',
+    url: 'http://192.168.0.87:8080/payment/chargeCreditCard',
     data: {
         fName: fName,
         email: email,

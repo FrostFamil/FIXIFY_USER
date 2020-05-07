@@ -5,7 +5,7 @@ import axios from 'axios';
 const getAllAcceptedRequests = (creator) => {
     return axios({
     method: 'post',
-    url: 'http://localhost:8080/requests/getAcceptedRequest',
+    url: 'http://192.168.0.87:8080/requests/getAcceptedRequest',
     data: {
         creator: creator
     }

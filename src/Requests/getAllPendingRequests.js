@@ -5,7 +5,7 @@ import axios from 'axios';
 const getAllPendingRequests = (creator) => {
     return axios({
     method: 'post',
-    url: 'http://192.168.0.87:8080/requests/getPendingRequest',
+    url: 'http://localhost:8080/requests/getPendingRequest',
     data: {
         creator: creator
     }

@@ -5,7 +5,7 @@ import axios from 'axios';
 const profileRequest = (userId) => {
     return axios({
     method: 'post',
-    url: 'http://192.168.0.87:8080/auth/profile',
+    url: 'http://localhost:8080/auth/profile',
     data: {
         userId: userId
     }
@@ -21,7 +21,7 @@ const profileRequest = (userId) => {
 const getFixerProfileRequest = (fixerId) => {
     return axios({
     method: 'post',
-    url: 'http://192.168.0.87:8080/auth/fixerProfile',
+    url: 'http://localhost:8080/auth/fixerProfile',
     data: {
         fixerId: fixerId
     }
@@ -36,7 +36,7 @@ const getFixerProfileRequest = (fixerId) => {
 const saveUserCard = (number, exp_month, exp_year, creatorOfCard) => {
     return axios({
     method: 'post',
-    url: 'http://192.168.0.87:8080/auth/addCard',
+    url: 'http://localhost:8080/auth/addCard',
     data: {
         cardNumber: number,
         expMonth: exp_month,
@@ -54,7 +54,7 @@ const saveUserCard = (number, exp_month, exp_year, creatorOfCard) => {
 const getCards = (creatorOfCard) => {
     return axios({
     method: 'post',
-    url: 'http://192.168.0.87:8080/auth/getCards',
+    url: 'http://localhost:8080/auth/getCards',
     data: {
         creatorOfCard: creatorOfCard
     }
@@ -69,7 +69,7 @@ const getCards = (creatorOfCard) => {
 const updateUserProfileRequest = (userId, fName, lName, email, phone) => {
     return axios({
     method: 'post',
-    url: 'http://192.168.0.87:8080/auth/updateUserProfile',
+    url: 'http://localhost:8080/auth/updateUserProfile',
     data: {
         userId: userId,
         fName: fName,

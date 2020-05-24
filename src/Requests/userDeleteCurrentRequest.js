@@ -5,7 +5,7 @@ import axios from 'axios';
 const userDeleteCurrentRequest = (requestId) => {
     return axios({
     method: 'post',
-    url: 'http://192.168.0.87:8080/requests/deleteCurrentRequest',
+    url: 'http://192.168.0.89:8080/requests/deleteCurrentRequest',
     data: {
         requestId: requestId
     }

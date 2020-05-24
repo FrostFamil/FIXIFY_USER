@@ -5,7 +5,7 @@ import axios from 'axios';
 const userGetsHisCurrentRequest = (creator) => {
     return axios({
     method: 'post',
-    url: 'http://192.168.0.87:8080/requests/userFindHisRequest',
+    url: 'http://192.168.0.89:8080/requests/userFindHisRequest',
     data: {
         creator: creator
     }
